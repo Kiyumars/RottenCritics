@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block Javascript%}
+	<script type="text/javascript" src="{{static_url('game_round.js')}}"></script>
+{% end %}
+
+{% block game_content %}
+
+<br><br>
+
+
+		 <movie_info><h3>Title:   {{movie['title']}} </h3></movie_info>
+
+	<movie_info>Released in {{movie['year']}} </movie_info><br><br>
+	<movie_info>Director: {{movie['director'] }} </movie_info><br><br>
+	{% if movie['cast'][:5] %}
+	Cast: {% for cast in movie['cast'][:5] %} {{cast}}, {% end %} 
+	{% end %} 
+	<br><br>
+	Plot outline: {{movie['plot outline']}} <br><br>
+	
+
+	<h4>Extra Hints</h4>
+
+	 <a class='poster'>Want to see poster?</a>
+	 <div class='img_overlay hidden'>
+	 	<img height='400' src='{{movie["full-size cover url"]}}'>
+	 </div>
+	 <br><br> 
+	Full plot description: <button id='reveal_plot'>Show full plot</button><div id='entire_plot'> {{movie['plot']}} </div><br><br>
+
+	
+	<form method="GET" action="/score_update">
+		{% for player in players %}
+			{{ player }}'s guess: <input type="text" id="{{ player }}" name="{{ player }}" placeholder="{{player}}, enter your guess." value="42"> <br>
+		{% end %}
+		<input type='hidden' id='game_id' name='game_id' value='{{ game_id }}'>
+		<input type="submit" value='Submit guesses'>
+	</form>
+{% end %}

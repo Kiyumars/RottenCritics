@@ -1,0 +1,52 @@
+
+	#ratings {
+		display: none;
+	}
+
+	#entire_plot {
+		display: none;
+		}
+
+	body {
+
+		background: white;
+	}
+
+	.guess_graph {
+	width: 100px;
+	height: 120px;
+	border: 1px solid #aeaeae;
+	background-color: #eaeaea;
+	}
+
+	.total_graph {
+		width: 100px;
+		height: 300px;
+		border: 1px solid #aeaeae;
+		background-color: #eaeaea;
+	}
+
+	.bar {
+		width: 20px;
+		margin: 1px;
+		display: inline-block;
+		position: relative;
+		background-color: #aeaeae;
+		vertical-align: baseline;
+
+	}
+
+	.img_overlay {
+		position: absolute;
+		top:50%;
+	  	left: 130px;
+
+	}
+
+	.hidden {
+		visibility: hidden;
+	}
+
+	.poster {
+		color: blue;
+	}

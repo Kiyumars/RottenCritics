@@ -1,0 +1,158 @@
+<html>
+<head>
+	<title>Rotten Critics</title>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script type="text/javascript">
+
+	$(document).ready(function(){
+		$('#num_players').hide();
+		$('#enter_player_num').hide();
+
+
+		//only start game if there is at least one player and one actor defined
+		function enable_start_button(){
+			if($('#player1').val() != '' && $('#actor').val() != ''){
+				$('#start_game').removeAttr('disabled');
+			}else{
+				$('#start_game').attr('disabled', true);
+			};
+		};
+
+
+		//print out actor name on page
+		$('#actor').focusout(function(){
+			var actor_name = $('#actor').val();
+			var actor_entry = actor_name + "<br><br><br>";
+			$('#print_actor').html(actor_entry);
+			
+		});
+		$('#actor').keyup(function(){
+			enable_start_button();
+		});
+
+
+		$('#player1').change(function(){
+			enable_start_button();
+		});
+
+
+		//show input fields necessary for additonal players
+		$('#moreplayers').click(function(){
+			$('#enter_player_num').toggle();
+			$('#num_players').toggle();
+
+		});
+
+
+		//Create additonal inputs for more players
+		$('#num_players').keyup(function(){
+			var player_num = parseInt($('#num_players').val());
+			$('#more_players').html('')
+			if(player_num){
+				for(var i=2; i < player_num + 1; i++ ){
+					console.log(i);
+					var player_html ="<input name='player" + String(i) + "' id='player" + String(i) + "' placeholder='Enter name of player " + String(i) + "'></br>";
+					$(player_html).appendTo('#more_players');
+					console.log(player_html);
+				};
+			};
+		});
+
+
+		//print out number of players
+		$('#print_now').click(function(){
+			$('#playerInfo').html('');
+			var number_players = $('.players input').length;
+			var player_list = [];
+
+			for(var i=1; i <= number_players; i++){
+				var player_ID = "#player" + String(i);
+				var player_name = String($(player_ID).val());
+				//exclude empty fields
+				if(player_name){
+					player_list.push(player_name);
+				};
+			};
+			//print out player names
+			for(x=0; x < player_list.length; x++){
+				var player_entry = "Player " + String(x + 1) + ": " + player_list[x] + "<br>";
+				$('#playerInfo').append(player_entry);	
+			}; 
+				// console.log(player_entry);
+				// $((playerName).val()).appendTo('#playerInfo');	
+			
+			// $("#playerInfo").html(player_info);
+		});
+
+		//get imdb info through tornado request handler
+		$('#get_entered_actor').click(function(){
+			var actor_name = $('#actor').val();
+			$('#python_response').text('')
+			$.ajax({
+				type: 'GET',
+				url: '/getactor',
+				data: {actorName: actor_name},
+				success: function(result){
+					$('#python_response').text(result);
+				}
+				});
+		});
+
+
+		//Print out a surprise actor
+		$('#surprise').click(function(){
+			var random_actors = ['Tom Cruise', "Nicolas Cage", "Angelina Jolie", "Chuck Norris", "Meryl Streep"];
+			var actor_list_length = random_actors.length;
+			var rand_index = Math.floor((Math.random()* actor_list_length));
+			var chosen_actor = random_actors[rand_index];
+			$('#print_actor').text(chosen_actor);
+		});
+
+		$('#print_entered_actor').click(function(){
+			var entered_actor = $('#actor').val();
+			if (entered_actor){
+				$('#print_actor').text(entered_actor);
+			}else{
+				$('#print_actor').text("Please enter an actor's name.");
+			};
+
+		});
+
+	});
+</script>
+</head>
+<body>
+
+	
+	
+
+	<form action='/'>
+	
+	<playerTitle><b>Player List</b></playerTitle>
+	<input type='button' name='moreplayers' id='moreplayers' value='More players?'>
+	<input type='text' name='num_players' id='num_players' placeholder='How many players in total?'><br>
+	<div class='players'>
+	<br><input name='player1' id='player1' placeholder='Enter name of player 1'/>
+	<div id='more_players'></div>
+	</div>
+	<input type='button' name='print_now' id='print_now' value="Print player names."><br>
+	<div id="playerInfo"></div></br><br><br>
+	</form>	
+	
+	<div id='num_player'></div>
+	
+
+	<actor><b>Choose an actor</b><actor>
+	<!-- <input type='button' name='surprise' id='surprise' value='Surprise me!'><br><br> -->
+	<input name='actor' id='actor' placeholder='Which actor?'><br>
+	<!-- <input type="button" id='print_entered_actor' value="Print actor's name."><br> -->
+	<input type='button' id='get_entered_actor' value='Look up actor.'>
+	<div id='python_response'></div>
+	<!-- <div id='print_actor' name='print_actor'>  </div> <br><br><br> -->
+	<input type='button' id='start_game' value="Let's start the game!" disabled=true>
+
+
+</body>
+
+</html>

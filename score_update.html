@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block game_content %}
+
+	The critics score is {{ critics_score }}. <br><br>
+
+	{% for player in players_guesses %}
+		{{ player }}'s guess was {{ players_guesses[player]}}. <br>
+		This was off by {{ players_penalties[player] }} points. <br>
+		{{ player }}'s total penalty score is {{ players_scores[player] }}<br><br> 
+	{% end %}
+		
+	
+	<form method="GET" action="/next_round">
+		<input type="hidden" value="{{ game_id }}" id="game_id" name="game_id">
+		<input type="submit" value="Play new round!" >
+	</form>
+
+<!-- <div class="guess_graph">
+	{% for player in players_guesses %}
+		<div style="height: {{players_penalties[player]}}px;" class="bar"></div>
+	{% end %}
+</div>
+
+<div class="total_graph">
+	{% for player in players_scores %}
+		<div style="height: {{players_scores[player]}}px;" class="bar"></div>
+	{% end %}
+</div> -->
+
+{% end %}

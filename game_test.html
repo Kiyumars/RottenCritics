@@ -1,0 +1,24 @@
+
+{% block game_content%}
+<div id="game_content">
+	{% for player in players %}
+		{{player}}: {{players[player]}} <br>
+	{% end %}
+	
+	The actor's name is {{actor_name}}. <br> <br>
+	<form method="GET" action="/score_update">
+		{% for player in players %}
+			{{ player }}'s guess: <input type="text" id="{{ player }}" name="{{ player }}" placeholder="{{player}}, enter your guess." value="42"> <br>
+		{% end %}
+	<input type="hidden" value="{{ game_id }}" id='game_id' name='game_id'>
+	<input type="submit" value="Update Scores"></input>
+	</form>
+
+
+
+</div>
+
+{% end %}
+
+
+
